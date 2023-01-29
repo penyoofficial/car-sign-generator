@@ -19,7 +19,7 @@ function setSign(code) {
         && !(/^\W[A-Z]·[ABCDEFGHJK][A-Z0-9]{5}$/.test(code))
         && !(/^\W[A-Z]·[A-Z0-9]{5}[ABCDEFGHJK]$/.test(code))
         && !(/^\W·[A-Z0-9]{5}应急$/.test(code)))
-        return "非法的车牌号！"
+        return false;
 
     var plate = document.getElementById("iron-plate"),
         theme = "theme-";
@@ -39,12 +39,10 @@ function setSign(code) {
         if (code.includes("应急")) {
             theme += "police";
             plate.setAttribute("class", "new-energy emergency");
-        }
-        else if (/[ABCDEFGHJK]$/.test(code[8])) {
+        } else if (/[ABCDEFGHJK]$/.test(code[8])) {
             theme += "big";
             plate.setAttribute("class", "new-energy big");
-        }
-        else {
+        } else {
             theme += "new-energy";
             plate.setAttribute("class", "new-energy");
         }
@@ -72,7 +70,7 @@ function setSign(code) {
         bit.innerText = code[i];
         info.appendChild(bit);
     }
-    return "已设定。"
+    return true;
 }
 
 function setPresets() {
@@ -107,4 +105,14 @@ function setPresets() {
         default:
             setSign("京A·00001");
     }
+}
+
+function setUsersets() {
+    var code = document.getElementById("code");
+    if (code.value != "")
+        if (setSign(code.value)) {
+            code.value = "已设置。";
+            document.getElementById("presets").value = "";
+        } else
+            code.value = "非法的牌号！";
 }
